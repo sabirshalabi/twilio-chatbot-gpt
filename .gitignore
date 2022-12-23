@@ -1,0 +1,20 @@
+#Ignore virtual environment folder
+venv/
+
+#Ignore configuration files
+*.env
+config.ini
+
+#Ignore compiled Python files
+*.pyc
+
+#Ignore build artifacts
+build/
+dist/
+
+#Ignore test results
+test-results/
+
+#Ignore other files and directories
+*.log
+.DS_Store
