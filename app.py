@@ -3,8 +3,6 @@ from twilio.rest import Client
 from sabirsbot import ask, append_interaction_to_chat_log
 import os
 
-
-
 app = Flask(__name__)
 
 # Set the secret key to a random string to keep session data secure
@@ -14,6 +12,12 @@ app.config['SECRET_KEY'] = 'any-random-string'
 account_sid = os.getenv('account_sid')
 auth_token = os.getenv('auth_token')
 client = Client(account_sid, auth_token)
+
+# Set the Twilio phone number
+twilio_phone_number = os.getenv('twilio_phone_number')
+
+# Set the phone number to send SMS to
+my_phone_number = os.getenv('my_phone_number')
 
 
 @app.route('/sabirsbot', methods=['POST'])
@@ -47,14 +51,15 @@ def sabirsbot():
         # Use Twilio to send the chatbot's response as a text message
         message = client.messages.create(
             body=answer,
-            from_='+13854692664',
-            to='+17609163809'
+            from_=twilio_phone_number,
+            to=my_phone_number
         )
     except Exception as e:
         print(e)
         return "Error sending chatbot's response as text message"
 
     return str(message.sid)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
