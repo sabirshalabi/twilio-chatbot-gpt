@@ -20,7 +20,7 @@ twilio_phone_number = os.getenv('twilio_phone_number')
 my_phone_number = os.getenv('my_phone_number')
 
 
-@app.route('/sabirsbot', methods=['POST'])
+@app.route('/', methods=['POST'])
 def sabirsbot():
     # Get the incoming message from the request values
     incoming_msg = request.values['Body']
