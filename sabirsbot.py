@@ -34,6 +34,10 @@ def ask(question, chat_log=None):
     # Return the response text
     return response.choices[0].text
 
+def save_chat_log_to_file(chat_log):
+    with open("chat_log.txt", "a") as f:
+        f.write(chat_log)
+
 
 def append_interaction_to_chat_log(question, answer, chat_log):
     """
@@ -44,6 +48,9 @@ def append_interaction_to_chat_log(question, answer, chat_log):
         chat_log = start_sequence + question + "\n" + restart_sequence + answer
     else:
         chat_log += start_sequence + question + "\n" + restart_sequence + answer
+
+    # Save the chat log to a file
+    save_chat_log_to_file(chat_log)
 
     return chat_log
 
