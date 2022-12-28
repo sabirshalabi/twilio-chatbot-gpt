@@ -2,9 +2,9 @@
 A chatbot powered by the OpenAI GPT-3 language model, designed to assist and entertain users by providing useful information on a wide range of topics.
 
 ## Features
-* Utilizes the GPT-3 language model to generate responses to user questions
-* Can understand and interpret natural language inputs and generate coherent and relevant responses
-* Constantly learning and evolving to better serve users
+* Use GPT-3 to Generate responses from texts 
+* Can text from anywhere and interact with GPT-3
+
 ## Getting Started
 To use the Twilio-GPT Chatbot, you will need to have a Twilio account and a phone number that can receive SMS messages. You will also need to obtain an OpenAI API key.
 1. Clone the repository and install the dependencies:
