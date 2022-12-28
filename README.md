@@ -24,6 +24,4 @@ pip install -r requirements.txt
 python app.py
 ```
 4. Send a text message to your Twilio phone number with your question or request. The chatbot will respond with an answer or information.
-## Troubleshooting
-If you encounter any issues while using the Twilio-GPT Chatbot, you can check the 'chat_log.txt' file for more information and troubleshoot accordingly.
 
