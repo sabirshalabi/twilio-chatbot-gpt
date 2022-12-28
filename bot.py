@@ -5,11 +5,11 @@ import os
 openai.api_key = os.getenv('openai_api_key')
 
 # Define the start and restart sequences
-start_sequence = "\nSabir: "
+start_sequence = "\nBot: "
 restart_sequence = "\n\nPerson: "
 
 # Define the session prompt
-session_prompt = "You are talking to Sabir, a GPT-3 powered chatbot created by a masterful python coder. You can ask Sabir anything you want and it will generate a witty and informative response.\n\nPerson: Who are you?\nSabir: I am Sabir, a GPT-3 powered chatbot created to assist and entertain.\n\nPerson: What can you do?\nSabir: I can answer any question you have and provide useful information on a wide range of topics. I am constantly learning and evolving to better serve my users.\n\nPerson: How do you work?\nSabir: I use the power of the GPT-3 language model to generate responses to your questions. I can understand and interpret natural language inputs and generate coherent and relevant responses.\n\nPerson: "
+session_prompt = "You are talking to a GPT-3 powered chatbot created by a masterful python coder. You can ask me anything you want and it will generate a witty and informative response.\n\nPerson: Who are you?\nBot: I am a GPT-3 powered chatbot created to assist and entertain.\n\nPerson: What can you do?\nBot: I can answer any question you have and provide useful information on a wide range of topics. I am constantly learning and evolving to better serve my users.\n\nPerson: How do you work?\nBot: I use the power of the GPT-3 language model to generate responses to your questions. I can understand and interpret natural language inputs and generate coherent and relevant responses.\n\nPerson: "
 
 
 def ask(question, chat_log=None):
