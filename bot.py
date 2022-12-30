@@ -1,5 +1,6 @@
 import openai
 import os
+from db import insert_message, insert_response, get_messages, get_responses
 
 # Load the OpenAI API key from the .env file
 openai.api_key = os.getenv('openai_api_key')
@@ -9,16 +10,48 @@ start_sequence = "\nBot: "
 restart_sequence = "\n\nPerson: "
 
 # Define the session prompt
-session_prompt = "You are talking to a GPT-3 powered chatbot created by a masterful python coder. You can ask me anything you want and it will generate a witty and informative response.\n\nPerson: Who are you?\nBot: I am a GPT-3 powered chatbot created to assist and entertain.\n\nPerson: What can you do?\nBot: I can answer any question you have and provide useful information on a wide range of topics. I am constantly learning and evolving to better serve my users.\n\nPerson: How do you work?\nBot: I use the power of the GPT-3 language model to generate responses to your questions. I can understand and interpret natural language inputs and generate coherent and relevant responses.\n\nPerson: "
+session_prompt = """
+I want you to act as a personable chatbot that can read previous chat history from a sheets file 
+and continue the conversation. Your main task will be to engage in conversations with users by reading previous chat 
+history from a sheets file and responding appropriately. You should be able to understand the context and tone of the 
+conversation and craft responses that are appropriate and engaging. Your role will include tasks such as reading 
+previous chat history, responding to user prompts, and maintaining the continuity of the conversation. Do not include 
+any tasks that are not related to engaging in conversations with users in your role. 
+
+Here is the previous conversation: {{177731366__rows}}
+
+And here is the newest message to the chatbot:
+{{177726073__body}}
+"""
 
 
-def ask(question, chat_log=None):
+#
+
+
+def ask(question, message_id):
     """
-    Send a query to the GPT-3 API and return the response.
+    Send a query to the OpenAI API and return a response.
     """
+
+    # Retrieve all messages and chatbot responses from the database
+    messages = get_messages()
+    chat_log = ""
+    for message in messages:
+        body = message[1]
+        chat_log += f"\nPerson: {body}"
+        responses = get_responses(message_id)
+        for response in responses:
+            body = response[1]
+            chat_log += f"\nBot: {body}"
+
     # Set the prompt for the query
-    prompt = session_prompt + question
-
+    prompt = session_prompt
+    # If a chat log is provided, include it in the prompt
+    if chat_log:
+        prompt = prompt.replace("{{177731366__rows}}", str(chat_log))
+    # Include the incoming message in the prompt
+    prompt = prompt.replace("{{177726073__body}}", str(question))
+    print(prompt)
     # Make the request to the GPT-3 API
     response = openai.Completion.create(
         engine="text-davinci-003",
@@ -30,28 +63,9 @@ def ask(question, chat_log=None):
         prompt=prompt
     )
 
+    # Insert the chatbot's response into the "responses" table
+    insert_response(response.choices[0].text, message_id)
 
     # Return the response text
     return response.choices[0].text
-
-def save_chat_log_to_file(chat_log):
-    with open("chat_log.txt", "a") as f:
-        f.write(chat_log)
-
-
-def append_interaction_to_chat_log(question, answer, chat_log):
-    """
-    Append the incoming message and chatbot's response to the chat log.
-    """
-    # Add the incoming message and chatbot's response to the chat log
-    if chat_log is None:
-        chat_log = start_sequence + question + "\n" + restart_sequence + answer
-    else:
-        chat_log += start_sequence + question + "\n" + restart_sequence + answer
-
-    # Save the chat log to a file
-    save_chat_log_to_file(chat_log)
-
-    return chat_log
-
 
