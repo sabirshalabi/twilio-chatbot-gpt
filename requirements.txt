@@ -3,3 +3,6 @@ openai==0.2.4
 twilio==7.12.1
 
 gunicorn
+
+requests~=2.28.1
+beautifulsoup4~=4.11.1
